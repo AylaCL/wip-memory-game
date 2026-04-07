@@ -1,20 +1,30 @@
 import { useRef } from 'react'
-import { flipCardAnimation } from '../animations/cardAnimations'
+import { flipCardUp2 } from '../animations/cardAnimations'
 import Card from '../canvas/Card'
 import { CardObject, useGameStore } from '../stores/gameStore'
 import { getCardPosition } from '../utils/getCardPosition'
+import { useGameLogic } from '../hooks/useGameLogic'
 
 export default function GameBoard() {
     const cards: CardObject[] = useGameStore((state) => state.cards)
-    const flipCard = useGameStore((state) => state.flipCard)
+    const selectCard = useGameStore((state) => state.selectCard)
+    const selectedCardIds = useGameStore((state) => state.selectedCardIds)
     const meshRefs = useRef<{ [key: string]: any }>({})
 
+    useGameLogic(meshRefs)
+
+    useGameStore.subscribe((state) => {
+        console.log('selectedCardIds:', state.selectedCardIds)
+    })
+
     function handleCardFlip(cardId: string, isFlipped: boolean) {
-        flipCard(cardId)
+        if (isFlipped || selectedCardIds.length >= 2) return
+
+        selectCard(cardId)
 
         const meshRef = meshRefs.current[cardId]
         if (meshRef) {
-            flipCardAnimation({ current: meshRef }, !isFlipped)
+            flipCardUp2({ current: meshRef })
         }
     }
 

@@ -27,7 +27,7 @@ function Lights() {
 export default function Scene() {
     return (
         <Canvas
-            camera={{ fov: 50, near: 0.1, far: 200, position: [0, 6, 6] }}
+            camera={{ fov: 50, near: 0.1, far: 200, position: [0, 6, 4] }}
             gl={{ antialias: true }}
         >
             <GizmoHelper alignment="bottom-right" margin={[80, 80]}>

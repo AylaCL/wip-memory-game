@@ -10,12 +10,33 @@ export type CardObject = {
 
 type GameStore = {
     cards: CardObject[]
+    selectedCardIds: string[]
+    selectCard: (id: string) => void
     flipCard: (id: string) => void
     matchCard: (id: string) => void
+    clearSelectedCardIds: () => void
 }
 
-export const useGameStore = create<GameStore>((set) => ({
+export const useGameStore = create<GameStore>((set, get) => ({
     cards: generateInitialCards(),
+    selectedCardIds: [],
+
+    selectCard: (id) => {
+        const state = get()
+        const card = state.cards.find((card) => card.id === id)
+
+        if (
+            !card ||
+            card.isMatched ||
+            state.selectedCardIds.length >= 2 ||
+            state.selectedCardIds.includes(id)
+        ) {
+            return
+        }
+
+        set({ selectedCardIds: [...state.selectedCardIds, id] })
+        state.flipCard(id)
+    },
     flipCard: (id) =>
         set((state) => ({
             cards: state.cards.map((card) =>
@@ -30,4 +51,7 @@ export const useGameStore = create<GameStore>((set) => ({
                     : card
             ),
         })),
+    clearSelectedCardIds: () => {
+        set({ selectedCardIds: [] })
+    },
 }))
