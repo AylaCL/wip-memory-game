@@ -1,7 +1,7 @@
-import { Card, useGameStore } from "../stores/gameStore";
+import { CardObject, useGameStore } from '../stores/gameStore'
 
 export default function CardsInfo() {
-    const cards: Card[] = useGameStore((state) => state.cards);
+    const cards: CardObject[] = useGameStore((state) => state.cards)
 
     return (
         <div>
@@ -9,14 +9,12 @@ export default function CardsInfo() {
             <ul>
                 {cards.map((card, index) => (
                     <li key={card.id}>
-                        Index: {index} |
-                        ID: {card.id} |
-                        Color: {card.color} |
-                        Flipped: {card.isFlipped ? "Yes" : "No"} |
-                        Matched: {card.isMatched ? "Yes" : "No"}
+                        Index: {index} | ID: {card.id} | Color: {card.color} |
+                        Flipped: {card.isFlipped ? 'Yes' : 'No'} | Matched:{' '}
+                        {card.isMatched ? 'Yes' : 'No'}
                     </li>
                 ))}
             </ul>
         </div>
-    );
+    )
 }
