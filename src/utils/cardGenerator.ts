@@ -9,7 +9,6 @@ const colors: string[] = [
     'orange',
     'pink',
     'brown',
-    'black',
     'white',
 ]
 

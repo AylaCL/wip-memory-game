@@ -1,18 +1,57 @@
 import gsap from 'gsap'
 
-export function flipCardAnimation(
+export function flipCardAnimation(meshRef: any, isFlipped: boolean) {
+    let targetRotation = 0;
+    let targetY = 0;
+
+    if (isFlipped) {
+        targetRotation = -Math.PI;
+        targetY = 0.5;
+        flipCardUp(meshRef, targetRotation, targetY)
+    } else {
+        targetRotation = 0;
+        targetY = 0;
+        flipCardDown(meshRef, targetRotation, targetY)
+    }
+}
+
+function flipCardUp(
     meshRef: any,
-    isFlipped: boolean,
-    onComplete?: () => void
+    targetRotation: number,
+    targetY: number
 ) {
-    gsap.killTweensOf(meshRef.current)
+    const tl = gsap.timeline();
 
-    const targetRotation = isFlipped ? -Math.PI : 0
+    tl.to(meshRef.current.position, {
+        y: targetY,
+        duration: 0.4,
+        ease: "power2.out"
+    });
 
-    gsap.to(meshRef.current.rotation, {
+    tl.to(meshRef.current.rotation, {
         z: targetRotation,
         duration: 0.4,
-        ease: 'power2.out(0.5)',
-        onComplete: onComplete,
-    })
+        ease: "back.out(0.5)"
+    }, "-=0.3");
+}
+
+function flipCardDown(
+    meshRef: any,
+    targetRotation: number,
+    targetY: number
+) {
+    const tl = gsap.timeline();
+    
+    tl.to(meshRef.current.rotation, {
+        z: targetRotation,
+        duration: 0.4,
+        ease: "back.out(0.5)"
+    });
+
+    tl.to(meshRef.current.position, {
+        y: targetY,
+        duration: 0.4,
+        ease: "power2.out"
+    }, "-=0.3");
+
 }
